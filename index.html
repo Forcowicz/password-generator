@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<main class="content">
+    <h1 class="heading">Generate a password!</h1>
+    <p class="info">
+        Use our tool to generate a random, and SAFE password. Your outputs are not saved anywhere, it's just for you.
+        Passwords contain from 6 to 32 characters, can have special symbols, upper and lower case letters and numbers.
+    </p>
+    <div class="selection-wrapper">
+        <div class="selection-group">
+            <span class="selection" id="selection0">Lowercase letters (a-z)</span>
+            <span class="selection" id="selection1">Uppercase letters (A-Z)</span>
+        </div>
+        <div class="selection-group">
+            <span class="selection" id="selection2">Digits (0-9)</span>
+            <span class="selection" id="selection3">Special characters ($!?.,@)</span>
+        </div>
+    </div>
+    <div class="length-wrapper">
+        <span class="switch__text">Length:</span>
+        <div class="switch">
+            <span class="switch__arrow switch__arrow--top" id="arrowUp"></span>
+            <span class="switch__number" id="switchText">16</span>
+            <span class="switch__arrow switch__arrow--bottom" id="arrowBottom"></span>
+        </div>
+    </div>
+    <button class="generate" id="generateBtn">Generate</button>
+    <div class="output">
+        <span class="output__password" id="output" style="display: none;"></span>
+    </div>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
