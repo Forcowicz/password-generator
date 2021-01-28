@@ -188,7 +188,6 @@ body {
     width: 90%;
     height: 6rem;
     padding: 1.4rem;
-    overflow: hidden;
     font-size: 2.4rem;
     font-weight: 700;
     text-align: center;
@@ -202,6 +201,11 @@ body {
     animation: bounce .8s ease-in;
     transition: all .15s;
     backface-visibility: hidden;
+    cursor: pointer;
+}
+
+.output__password:hover {
+    color: #039d23;
 }
 
 .output__backgroundEl {
@@ -217,8 +221,38 @@ body {
     backface-visibility: hidden;
 }
 
+.output__copyMessage {
+    position: absolute;
+    bottom: -3.5rem;
+    left: 50%;
+    font-size: 1.2rem;
+    padding: 1rem;
+    border-radius: 6px;
+    color: #fff;
+    background-color: #039d23;
+    transform: translateX(-50%);
+    box-shadow: 0 .5rem .5rem rgba(0, 0, 0, .15);
+    transition: all .15s;
+}
+
+.output__copyMessage-arrow {
+    position: absolute;
+    top: -55%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2rem;
+    height: 2rem;
+    background-color: #039d23;
+    clip-path: polygon(50% 50%, 0% 100%, 100% 100%);
+}
+
 .hidden {
     display: none;
+}
+
+.hidden--smooth {
+    visibility: hidden;
+    opacity: 0;
 }
 
 @keyframes bounce {
@@ -324,7 +358,7 @@ BREAKPOINTS:
     }
 }
 
-@media only screen and(max-height: 30.5em) {
+@media only screen and (max-height: 30.5em) {
     html {
         font-size: 30%;
     }

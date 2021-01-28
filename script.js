@@ -6,6 +6,7 @@ const selections = document.querySelectorAll('.selection');
 const arrowUp = document.getElementById('arrowUp');
 const arrowDown = document.getElementById('arrowBottom');
 const switchText = document.getElementById('switchText');
+const copyMessage = document.getElementById('copyMessage');
 
 let availableGroupsCount = 4;
 let passLength = 16;
@@ -24,6 +25,21 @@ const chars = new Map([
     [2, '0123456789'],
     [3, '$@!?.,&*^%()']
 ]);
+
+output.addEventListener('click', () => {
+   const textarea = document.createElement('textarea');
+   document.querySelector('body').appendChild(textarea);
+   textarea.setAttribute('display', 'none');
+   textarea.value = pass;
+   textarea.select();
+   document.execCommand('copy');
+   textarea.remove();
+
+   setTimeout(() => {
+       copyMessage.classList.add('hidden--smooth');
+   }, 1000);
+   copyMessage.classList.remove('hidden--smooth');
+});
 
 const arrowError = function (arrow) {
     setTimeout(() => {
