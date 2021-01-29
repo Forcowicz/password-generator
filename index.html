@@ -9,6 +9,17 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
+<div class="modal hidden--smooth" id="modal">
+    <div class="modal__content" style="display: none;" id="modalContent">
+        <span class="modal__close" id="modalClose">&times;</span>
+        <h2 class="modal__heading">Characters to exclude:</h2>
+        <p class="modal__info">Enter characters you don't want to appear in the password. Every character needs to be separated by a <code>,</code> comma.</p>
+        <div class="input-group">
+            <input class="modal__input" type="text" id="excludedCharsInput" minlength="1" autocomplete="off">
+        </div>
+        <button class="button button--small" id="modalBtn">Done</button>
+    </div>
+</div>
 <main class="content">
     <h1 class="heading">Generate a password!</h1>
     <p class="info">
@@ -22,7 +33,11 @@
         </div>
         <div class="selection-group">
             <span class="selection" id="selection2">Digits (0-9)</span>
-            <span class="selection" id="selection3">Special characters ($!?.,@)</span>
+            <span class="selection" id="selection3">Special characters ($!?.@)</span>
+        </div>
+        <div class="selection-group">
+            <span class="selection" id="selection4">Brackets ([ ]( ))</span>
+            <span class="selection selection--disabled" id="selection5">Excluded characters: none</span>
         </div>
     </div>
     <div class="length-wrapper">
@@ -33,7 +48,7 @@
             <span class="switch__arrow switch__arrow--bottom" id="arrowBottom"></span>
         </div>
     </div>
-    <button class="generate" id="generateBtn">Generate</button>
+    <button class="button" id="generateBtn">Generate</button>
     <div class="output">
         <span class="output__password" id="output" style="display: none;"></span>
         <span class="output__copyMessage hidden--smooth" id="copyMessage">
@@ -43,5 +58,6 @@
     </div>
 </main>
 <script src="script.js"></script>
+<script src="modal.js"></script>
 </body>
 </html>

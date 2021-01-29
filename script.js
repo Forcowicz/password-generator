@@ -7,24 +7,50 @@ const arrowUp = document.getElementById('arrowUp');
 const arrowDown = document.getElementById('arrowBottom');
 const switchText = document.getElementById('switchText');
 const copyMessage = document.getElementById('copyMessage');
+const excludedCharactersDOM = document.getElementById('selection5');
+let excludedCharactersInput = document.getElementById('excludedCharsInput');
+const modal = document.getElementById('modal');
+const modalContent = document.getElementById('modalContent');
+const modalClose = document.getElementById('modalClose');
+const modalDoneBtn = document.getElementById('modalBtn');
 
 let availableGroupsCount = 4;
 let passLength = 16;
 let pass = [];
+let excludedCharacters = '';
 
 const availableGroups = new Map([
     [0, true],
     [1, true],
     [2, true],
-    [3, true]
+    [3, true],
+    [4, true]
 ]);
 
 const chars = new Map([
     [0, 'abcdefghijklmnoprstuwyxz'],
     [1, 'ABCDEFGHIJKLMNOPRSTUWYXZ'],
     [2, '0123456789'],
-    [3, '$@!?.,&*^%()']
+    [3, '$@!?.,&*^%<>/\"\'~\`+-'],
+    [4, '[]()'],
+    ['excludedChars', '']
 ]);
+
+modalDoneBtn.addEventListener('click', () => {
+   excludedCharacters = excludedCharactersInput.value ? excludedCharactersInput.value.trim() : '';
+   if(excludedCharacters) {
+       excludedCharactersDOM.classList.remove('selection--disabled');
+
+       chars.set('excludedChars', [...new Set(excludedCharacters.split(','))].join(''));
+       excludedCharactersDOM.textContent = `Excluded characters: ${chars.get('excludedChars')}`;
+       excludedCharacters = '';
+   } else {
+       chars.set('excludedChars', '');
+       excludedCharacters = '';
+       excludedCharactersDOM.classList.add('selection--disabled');
+       excludedCharactersDOM.textContent = 'Excluded characters: none';
+   }
+});
 
 output.addEventListener('click', () => {
    const textarea = document.createElement('textarea');
@@ -70,10 +96,10 @@ arrowDown.addEventListener('click', () => {
 const generatePassword = function () {
     pass = [];
     while(pass.length < passLength) {
-        const group = Math.trunc(Math.random() * 4);
+        const group = Math.trunc(Math.random() * 5);
         if(availableGroups.get(group)) {
             const randomNumber = Math.trunc(Math.random() * chars.get(group).length);
-            pass.push(chars.get(group)[randomNumber]);
+            if(!chars.get('excludedChars').includes(chars.get(group)[randomNumber])) pass.push(chars.get(group)[randomNumber]);
         }
     }
     pass = pass.join('');
@@ -82,11 +108,13 @@ const generatePassword = function () {
 selections.forEach(el => {
     el.addEventListener('click', () => {
         if(availableGroupsCount > 1 || el.classList.contains('selection--disabled')) {
-            el.classList.toggle('selection--disabled');
-            if(availableGroups.get(Number(el.id.substr(el.id.length - 1, 1)))) {
-                availableGroups.set(Number(el.id.substr(el.id.length - 1, 1)), false);
-            } else {
-                availableGroups.set(Number(el.id.substr(el.id.length - 1, 1)), true);
+            if(el.id !== 'selection5') {
+                el.classList.toggle('selection--disabled');
+                if (availableGroups.get(Number(el.id.substr(el.id.length - 1, 1)))) {
+                    availableGroups.set(Number(el.id.substr(el.id.length - 1, 1)), false);
+                } else {
+                    availableGroups.set(Number(el.id.substr(el.id.length - 1, 1)), true);
+                }
             }
         }
 
