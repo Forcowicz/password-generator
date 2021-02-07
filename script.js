@@ -33,7 +33,7 @@ const chars = new Map([
     [2, '0123456789'],
     [3, '$@!?.,&*^%<>/\"\'~\`+-'],
     [4, '[]()'],
-    ['excludedChars', '']
+    ['excludedChars', []]
 ]);
 
 modalDoneBtn.addEventListener('click', () => {
@@ -42,7 +42,7 @@ modalDoneBtn.addEventListener('click', () => {
        excludedCharactersDOM.classList.remove('selection--disabled');
 
        chars.set('excludedChars', [...new Set(excludedCharacters.split(','))].join(''));
-       excludedCharactersDOM.textContent = `Excluded characters: ${chars.get('excludedChars')}`;
+       excludedCharactersDOM.textContent = `Excluded characters: ${chars.get('excludedChars').split('').join(', ')}`;
        excludedCharacters = '';
    } else {
        chars.set('excludedChars', '');
@@ -50,6 +50,11 @@ modalDoneBtn.addEventListener('click', () => {
        excludedCharactersDOM.classList.add('selection--disabled');
        excludedCharactersDOM.textContent = 'Excluded characters: none';
    }
+});
+
+// Hide modal shortcut
+document.addEventListener('keypress', function (e) {
+   if(!modal.classList.contains('hidden--smooth') && e.code === 'Enter') modalDoneBtn.click();
 });
 
 output.addEventListener('click', () => {
