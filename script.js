@@ -1,5 +1,6 @@
 'use strict';
 
+// SELECTORS
 const generateBtn = document.getElementById('generateBtn');
 const output = document.getElementById('output');
 const selections = document.querySelectorAll('.selection');
@@ -31,7 +32,7 @@ const chars = new Map([
     [0, 'abcdefghijklmnoprstuwyxz'],
     [1, 'ABCDEFGHIJKLMNOPRSTUWYXZ'],
     [2, '0123456789'],
-    [3, '$@!?.,&*^%<>/\"\'~\`+-'],
+    [3, `$@!?.,&*^%<>/"'~\`+-`],
     [4, '[]()'],
     ['excludedChars', []]
 ]);
@@ -146,3 +147,23 @@ generateBtn.addEventListener('click', function () {
     output.style.display = 'block';
     output.textContent = pass;
 });
+
+// MODAL
+excludedCharactersDOM.addEventListener('click', () => {
+    modal.classList.remove('hidden--smooth');
+    modalContent.style.display = 'flex';
+});
+
+modalClose.addEventListener('click', () => {
+    hideModal();
+});
+
+modalDoneBtn.addEventListener('click', () => {
+    hideModal();
+});
+
+function hideModal() {
+    modal.classList.add('hidden--smooth');
+    modalContent.classList.remove('modal__content--animationHide');
+    modalContent.style.display = 'none';
+}
