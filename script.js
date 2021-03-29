@@ -34,16 +34,15 @@ const chars = new Map([
     [2, '0123456789'],
     [3, `$@!?.,&*^%<>/"'~\`+-`],
     [4, '[]()'],
-    ['excludedChars', []]
+    ['excludedChars', '']
 ]);
 
 modalDoneBtn.addEventListener('click', () => {
    excludedCharacters = excludedCharactersInput.value ? excludedCharactersInput.value.trim() : '';
    if(excludedCharacters) {
        excludedCharactersDOM.classList.remove('selection--disabled');
-
-       chars.set('excludedChars', [...new Set(excludedCharacters.split(','))].join(''));
-       excludedCharactersDOM.textContent = `Excluded characters: ${chars.get('excludedChars').split('').join(', ')}`;
+       chars.set('excludedChars', [...new Set(excludedCharacters.split(',').map(el => el.trim()))]);
+       excludedCharactersDOM.textContent = `Excluded characters: ${chars.get('excludedChars').join(', ')}`;
        excludedCharacters = '';
    } else {
        chars.set('excludedChars', '');

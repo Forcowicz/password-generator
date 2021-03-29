@@ -205,6 +205,7 @@ code {
 .output {
     position: relative;
     width: 90%;
+    min-height: 6rem;
     height: 6rem;
     padding: 1.4rem;
     font-size: 2.4rem;
@@ -220,6 +221,7 @@ code {
     animation: bounce .8s ease-in;
     transition: all .15s;
     backface-visibility: hidden;
+    transform: translateZ(0);
     cursor: pointer;
 }
 
@@ -407,13 +409,11 @@ code {
 
 @keyframes comeFromBottom {
     from {
-        filter: blur(8px);
         opacity: .1;
         transform: translateY(60rem);
     }
 
     to {
-        filter: none;
         opacity: 1;
         transform: translateY(0);
     }
