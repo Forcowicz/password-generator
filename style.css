@@ -63,67 +63,6 @@ code {
     text-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
 }
 
-.length-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    font-size: 2rem;
-}
-
-.switch {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.switch__arrow {
-    display: inline-block;
-    width: 3rem;
-    height: 3rem;
-    background-color: var(--color-primary);
-    cursor: pointer;
-    transition: all .15s;
-}
-
-.switch__arrow:hover {
-    background-color: var(--color-primary-light);
-}
-
-.switch__arrow--error {
-    background-color: #e31c00;
-}
-
-.switch__arrow--error:hover {
-    background-color: #e31c00;
-}
-
-.switch__arrow--top {
-    clip-path: polygon(50% 50%, 0% 100%, 100% 100%);
-}
-
-.switch__arrow--top:active {
-    transform: translateY(-2px);
-}
-
-.switch__arrow--bottom {
-    clip-path: polygon(50% 50%, 0 0, 100% 0);
-}
-
-.switch__arrow--bottom:active {
-    transform: translateY(2px);
-}
-
-.switch__number {
-    display: inline-block;
-    font-size: 2rem;
-    font-weight: 700;
-    margin: .5rem 0;
-    text-shadow: 0 .5rem .5rem rgba(0, 0, 0, .15);
-}
-
 .selection-wrapper {
     width: 100%;
 }
@@ -133,6 +72,11 @@ code {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+}
+
+.selection-group h3 {
+    font-size: 2rem;
+    font-weight: normal;
 }
 
 .selection-group:not(:last-of-type) {
@@ -166,6 +110,28 @@ code {
 
 .selection--disabled:hover {
     background-color: #99a0bc;
+}
+
+.options-input {
+    border: none;
+    border-bottom: 3px solid var(--color-primary);
+    padding: 1rem 1rem .25rem 1rem;
+    font-family: inherit;
+    font-size: 2rem;
+    width: 6rem;
+    color: #ccc;
+    background-color: unset;
+    transition: all .15s;
+    text-align: center;
+}
+
+.options-input:focus {
+    outline: none;
+    border-bottom-color: var(--color-primary-light);
+}
+
+.options-input:disabled {
+    border-bottom-color: #e31c00;
 }
 
 .button {
@@ -208,25 +174,29 @@ code {
     min-height: 6rem;
     height: 6rem;
     padding: 1.4rem;
-    font-size: 2.4rem;
-    font-weight: 700;
     text-align: center;
     background-color: rgba(0, 0, 0, .4);
-    color: var(--color-primary);
 }
 
 .output__password {
+    display: block;
     position: relative;
     z-index: 1;
-    animation: bounce .8s ease-in;
     transition: all .15s;
     backface-visibility: hidden;
-    transform: translateZ(0);
     cursor: pointer;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--color-primary);
 }
 
 .output__password:hover {
     color: var(--color-primary-light);
+}
+
+.output__password--bounce {
+    animation: bounce .8s ease-in;
+    transform: translateZ(0);
 }
 
 .output__backgroundEl {
@@ -243,28 +213,22 @@ code {
 }
 
 .output__copyMessage {
-    position: absolute;
-    bottom: -3.5rem;
+    position: fixed;
+    bottom: 5rem;
     left: 50%;
-    font-size: 1.2rem;
-    padding: 1rem;
+    width: 50vw;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+    padding: 2rem;
     border-radius: 6px;
     color: #fff;
     background-color: var(--color-primary-light);
     transform: translateX(-50%);
     box-shadow: 0 .5rem .5rem rgba(0, 0, 0, .15);
     transition: all .15s;
-}
-
-.output__copyMessage-arrow {
-    position: absolute;
-    top: -55%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2rem;
-    height: 2rem;
-    background-color: var(--color-primary-light);
-    clip-path: polygon(50% 50%, 0% 100%, 100% 100%);
+    z-index: 100;
 }
 
 .hidden {
@@ -296,7 +260,6 @@ code {
     justify-content: space-between;
     align-items: center;
     width: 50rem;
-    height: 35rem;
     padding: 4rem;
     background-color: #181818;
     border-radius: 9px;
@@ -304,20 +267,6 @@ code {
     animation: comeFromBottom .75s cubic-bezier(1,.02,.84,.97);
     backface-visibility: hidden;
     transform: translate3d(0,0,0) translateZ(0);
-}
-
-.modal__close {
-    position: absolute;
-    top: 0;
-    right: 1rem;
-    font-size: 3.25rem;
-    cursor: pointer;
-    color: #404040;
-    transition: all .15s;
-}
-
-.modal__close:hover {
-    color: #4a4a4a;
 }
 
 .modal__heading {

@@ -11,7 +11,6 @@
 <body>
 <div class="modal hidden--smooth" id="modal">
     <div class="modal__content" style="display: none;" id="modalContent">
-        <span class="modal__close" id="modalClose">&times;</span>
         <h2 class="modal__heading">Characters to exclude:</h2>
         <p class="modal__info">Enter characters you don't want to appear in the password. Every character needs to be separated by a <code>,</code> comma.</p>
         <div class="input-group">
@@ -39,24 +38,23 @@
             <span class="selection" id="selection4">Brackets ([ ]( ))</span>
             <span class="selection selection--disabled" id="selection5">Excluded characters: none</span>
         </div>
-    </div>
-    <div class="length-wrapper">
-        <span class="switch__text">Length:</span>
-        <div class="switch">
-            <span class="switch__arrow switch__arrow--top" id="arrowUp"></span>
-            <span class="switch__number" id="switchText">16</span>
-            <span class="switch__arrow switch__arrow--bottom" id="arrowBottom"></span>
+        <div class="selection-group">
+            <h3>Length:</h3>
+            <input class="options-input" type="text" maxlength="2" value="16" id="length">
+        </div>
+        <div class="selection-group">
+            <h3>Amount:</h3>
+            <input class="options-input" type="text" maxlength="2" value="1" id="amount">
         </div>
     </div>
     <button class="button" id="generateBtn">Generate</button>
     <div class="output">
-        <span class="output__password" id="output" style="display: none;"></span>
-        <span class="output__copyMessage hidden--smooth" id="copyMessage">
-            <span class="output__copyMessage-arrow"></span>
-            Copied to clipboard!
-        </span>
+        <span class="output__password output__password--bounce" id="output-main" style="display: none;"></span>
     </div>
 </main>
+<div class="output__copyMessage hidden--smooth" id="copyMessage">
+    Copied to clipboard!
+</div>
 <script src="script.js"></script>
 </body>
 </html>

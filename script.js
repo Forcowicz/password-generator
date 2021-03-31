@@ -2,21 +2,19 @@
 
 // SELECTORS
 const generateBtn = document.getElementById('generateBtn');
-const output = document.getElementById('output');
+const mainOutput = document.getElementById('output-main');
+const outputs = document.getElementsByClassName('output__password');
 const selections = document.querySelectorAll('.selection');
-const arrowUp = document.getElementById('arrowUp');
-const arrowDown = document.getElementById('arrowBottom');
-const switchText = document.getElementById('switchText');
+const pwdLength = document.getElementById('length');
+const pwdAmount = document.getElementById('amount');
 const copyMessage = document.getElementById('copyMessage');
 const excludedCharactersDOM = document.getElementById('selection5');
 let excludedCharactersInput = document.getElementById('excludedCharsInput');
 const modal = document.getElementById('modal');
 const modalContent = document.getElementById('modalContent');
-const modalClose = document.getElementById('modalClose');
 const modalDoneBtn = document.getElementById('modalBtn');
 
 let availableGroupsCount = 4;
-let passLength = 16;
 let pass = [];
 let excludedCharacters = '';
 
@@ -52,62 +50,65 @@ modalDoneBtn.addEventListener('click', () => {
    }
 });
 
-// Hide modal shortcut
-document.addEventListener('keypress', function (e) {
-   if(!modal.classList.contains('hidden--smooth') && e.code === 'Enter') modalDoneBtn.click();
-});
+const addCopy = function (el) {
+    el.addEventListener('click', function () {
+        const textarea = document.createElement('textarea');
+        textarea.value = el.textContent;
+        document.body.append(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        textarea.remove();
 
-output.addEventListener('click', () => {
-   const textarea = document.createElement('textarea');
-   document.querySelector('body').appendChild(textarea);
-   textarea.setAttribute('display', 'none');
-   textarea.value = pass;
-   textarea.select();
-   document.execCommand('copy');
-   textarea.remove();
-
-   setTimeout(() => {
-       copyMessage.classList.add('hidden--smooth');
-   }, 1000);
-   copyMessage.classList.remove('hidden--smooth');
-});
-
-const arrowError = function (arrow) {
-    setTimeout(() => {
-        arrow.classList.remove('switch__arrow--error');
-        arrow.removeAttribute('disabled');
-    }, 1000);
-    arrow.classList.add('switch__arrow--error');
+        // Notification
+        setTimeout(() => {
+            copyMessage.classList.add('hidden--smooth');
+        }, 1800);
+        copyMessage.classList.remove('hidden--smooth');
+    })
 }
 
-arrowUp.addEventListener('click', () => {
-    if(passLength < 32 && !arrowUp.classList.contains('switch__arrow--error')) {
-        passLength++;
-        switchText.textContent = String(passLength);
-    } else {
-        arrowError(arrowUp);
+addCopy(mainOutput);
+
+const optionsError = option => {
+    option.setAttribute('disabled', true);
+    setTimeout(function () {
+        option.removeAttribute('disabled');
+    }, 2000);
+}
+
+pwdLength.addEventListener('change', function () {
+    const lengthValue = +pwdLength.value;
+    if(lengthValue > 32) {
+        optionsError(pwdLength);
+        pwdLength.value = 32;
+    } else if(lengthValue < 6) {
+        optionsError(pwdLength)
+        pwdLength.value = 6;
     }
 });
 
-arrowDown.addEventListener('click', () => {
-   if(passLength > 6) {
-       passLength--;
-       switchText.textContent = String(passLength);
-   } else {
-       arrowError(arrowDown);
-   }
-});
+pwdAmount.addEventListener('change', function () {
+    const amountValue = +pwdAmount.value;
+    if(amountValue > 20) {
+        optionsError(pwdAmount);
+        pwdAmount.value = 20;
+    } else if(amountValue < 1) {
+        optionsError(pwdAmount);
+        pwdAmount.value = 1;
+    }
+})
 
 const generatePassword = function () {
     pass = [];
-    while(pass.length < passLength) {
+    const localPass = [];
+    while(localPass.length < +pwdLength.value) {
         const group = Math.trunc(Math.random() * 5);
         if(availableGroups.get(group)) {
             const randomNumber = Math.trunc(Math.random() * chars.get(group).length);
-            if(!chars.get('excludedChars').includes(chars.get(group)[randomNumber])) pass.push(chars.get(group)[randomNumber]);
+            if(!chars.get('excludedChars').includes(chars.get(group)[randomNumber])) localPass.push(chars.get(group)[randomNumber]);
         }
     }
-    pass = pass.join('');
+    return localPass.join('');
 };
 
 selections.forEach(el => {
@@ -132,7 +133,7 @@ selections.forEach(el => {
 });
 
 generateBtn.addEventListener('click', function () {
-    if(output.style.display === 'block') {
+    if(mainOutput.style.display === 'block') {
         const pseudoEl = document.createElement('span');
         pseudoEl.setAttribute('class', 'output__backgroundEl');
         pseudoEl.textContent = pass;
@@ -142,27 +143,43 @@ generateBtn.addEventListener('click', function () {
         }, 750);
     }
 
-    generatePassword();
-    output.style.display = 'block';
-    output.textContent = pass;
+    if(+pwdAmount.value > 1) {
+        openModal();
+        modalContent.innerHTML = '';
+        const passwords = [];
+        while(+pwdAmount.value > passwords.length) {
+            passwords.push(generatePassword());
+        }
+        passwords.forEach(pwd => modalContent.innerHTML += `<span class='output__password'>${pwd}</span>`);
+        modalContent.childNodes.forEach(el => addCopy(el));
+        modalContent.style.height = modalContent.scrollHeight + parseFloat(getComputedStyle(modalContent).paddingTop) * 2 + 'px';
+    } else {
+        pass = generatePassword();
+        mainOutput.style.display = 'block';
+        mainOutput.textContent = pass;
+    }
 });
 
 // MODAL
-excludedCharactersDOM.addEventListener('click', () => {
+const openModal = function() {
     modal.classList.remove('hidden--smooth');
     modalContent.style.display = 'flex';
-});
+    modalContent.style.height = modalContent.scrollHeight + 'px';
+}
 
-modalClose.addEventListener('click', () => {
-    hideModal();
-});
-
-modalDoneBtn.addEventListener('click', () => {
-    hideModal();
-});
-
-function hideModal() {
+const hideModal = function() {
     modal.classList.add('hidden--smooth');
     modalContent.classList.remove('modal__content--animationHide');
     modalContent.style.display = 'none';
 }
+
+modal.addEventListener('click', function (e) {
+    if(e.target === modal) hideModal();
+});
+
+document.addEventListener('keypress', function (e) {
+    if(!modal.classList.contains('hidden--smooth') && e.code === 'Enter') modalDoneBtn.click();
+});
+
+modalDoneBtn.addEventListener('click', hideModal);
+excludedCharactersDOM.addEventListener('click', openModal);
