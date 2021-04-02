@@ -12,11 +12,13 @@ const excludedCharactersDOM = document.getElementById('selection5');
 let excludedCharactersInput = document.getElementById('excludedCharsInput');
 const modal = document.getElementById('modal');
 const modalContent = document.getElementById('modalContent');
+const modalDefaultContent = modal.querySelectorAll('.modal__content > *');
 const modalDoneBtn = document.getElementById('modalBtn');
 
 let availableGroupsCount = 4;
 let pass = [];
 let excludedCharacters = '';
+let copyMessageTimeout;
 
 const availableGroups = new Map([
     [0, true],
@@ -35,6 +37,7 @@ const chars = new Map([
     ['excludedChars', '']
 ]);
 
+// Close the modal (excluding characters state)
 modalDoneBtn.addEventListener('click', () => {
    excludedCharacters = excludedCharactersInput.value ? excludedCharactersInput.value.trim() : '';
    if(excludedCharacters) {
@@ -50,6 +53,7 @@ modalDoneBtn.addEventListener('click', () => {
    }
 });
 
+// Add copy on click functionality
 const addCopy = function (el) {
     el.addEventListener('click', function () {
         const textarea = document.createElement('textarea');
@@ -60,7 +64,8 @@ const addCopy = function (el) {
         textarea.remove();
 
         // Notification
-        setTimeout(() => {
+        clearTimeout(copyMessageTimeout);
+        copyMessageTimeout = setTimeout(() => {
             copyMessage.classList.add('hidden--smooth');
         }, 1800);
         copyMessage.classList.remove('hidden--smooth');
@@ -69,6 +74,7 @@ const addCopy = function (el) {
 
 addCopy(mainOutput);
 
+// Add and remove error from the length/amount input
 const optionsError = option => {
     option.setAttribute('disabled', true);
     setTimeout(function () {
@@ -76,6 +82,7 @@ const optionsError = option => {
     }, 2000);
 }
 
+// Make sure that length of each password is between 6 and 32
 pwdLength.addEventListener('change', function () {
     const lengthValue = +pwdLength.value;
     if(lengthValue > 32) {
@@ -87,6 +94,7 @@ pwdLength.addEventListener('change', function () {
     }
 });
 
+// Make sure that amount of passwords is between 1 and 20
 pwdAmount.addEventListener('change', function () {
     const amountValue = +pwdAmount.value;
     if(amountValue > 20) {
@@ -98,6 +106,7 @@ pwdAmount.addEventListener('change', function () {
     }
 })
 
+// Generate a password
 const generatePassword = function () {
     pass = [];
     const localPass = [];
@@ -111,6 +120,7 @@ const generatePassword = function () {
     return localPass.join('');
 };
 
+// Buttons for enabling/disabling characters
 selections.forEach(el => {
     el.addEventListener('click', () => {
         if(availableGroupsCount > 1 || el.classList.contains('selection--disabled')) {
@@ -132,6 +142,7 @@ selections.forEach(el => {
     });
 });
 
+// Display password(s)
 generateBtn.addEventListener('click', function () {
     if(mainOutput.style.display === 'block') {
         const pseudoEl = document.createElement('span');
@@ -143,8 +154,9 @@ generateBtn.addEventListener('click', function () {
         }, 750);
     }
 
+    // Is amount of passwords required is higher than 1
     if(+pwdAmount.value > 1) {
-        openModal();
+        openModal(false);
         modalContent.innerHTML = '';
         const passwords = [];
         while(+pwdAmount.value > passwords.length) {
@@ -161,7 +173,11 @@ generateBtn.addEventListener('click', function () {
 });
 
 // MODAL
-const openModal = function() {
+const openModal = function(excludedCharacters = true) {
+    if(excludedCharacters) {
+        modalContent.innerHTML = '';
+        modalDefaultContent.forEach(el => modalContent.append(el));
+    }
     modal.classList.remove('hidden--smooth');
     modalContent.style.display = 'flex';
     modalContent.style.height = modalContent.scrollHeight + 'px';
@@ -182,4 +198,4 @@ document.addEventListener('keypress', function (e) {
 });
 
 modalDoneBtn.addEventListener('click', hideModal);
-excludedCharactersDOM.addEventListener('click', openModal);
+excludedCharactersDOM.addEventListener('click', openModal)
