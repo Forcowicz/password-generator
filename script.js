@@ -180,7 +180,7 @@ const openModal = function(excludedCharacters = true) {
     }
     modal.classList.remove('hidden--smooth');
     modalContent.style.display = 'flex';
-    modalContent.style.height = modalContent.scrollHeight + 'px';
+    modalContent.style.height = 'auto';
 }
 
 const hideModal = function() {

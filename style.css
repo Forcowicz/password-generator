@@ -190,13 +190,18 @@ code {
     color: var(--color-primary);
 }
 
+.output__password:not(:last-child) {
+    margin-bottom: 1.25rem;
+}
+
 .output__password:hover {
     color: var(--color-primary-light);
 }
 
-.output__password--bounce {
+.output__password--single {
     animation: bounce .8s ease-in;
     transform: translateZ(0);
+    margin-bottom: 0;
 }
 
 .output__backgroundEl {
@@ -400,6 +405,11 @@ BREAKPOINTS:
 @media only screen and (max-width: 36.875em) {
     html {
         font-size: 55%;
+    }
+
+    .options-input {
+        padding-bottom: 3px;
+        border-bottom-width: 2px;
     }
 
     .selection-group {
